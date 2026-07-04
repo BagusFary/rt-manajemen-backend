@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreRumahRequest;
 use App\Http\Requests\AssignPenghuniRequest;
+use App\Services\KeuanganService;
 use App\Services\RumahService;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
@@ -14,9 +15,13 @@ class RumahController extends Controller
 {
     protected $rumahService;
 
-    public function __construct(RumahService $rumahService)
+    public function __construct(
+        RumahService $rumahService,
+        KeuanganService $keuanganService
+    )
     {
         $this->rumahService = $rumahService;
+        $this->keuanganService = $keuanganService;
     }
 
     public function index(): JsonResponse
@@ -58,6 +63,18 @@ class RumahController extends Controller
             'status' => 'success',
             'message' => 'Rumah berhasil dikosongkan dan riwayat ditutup.',
             'data' => $rumah
+        ]);
+    }
+
+    
+    public function historyPembayaran(int $id, KeuanganService $keuanganService): JsonResponse
+    {
+        $history = $keuanganService->getHistoryPembayaranByRumah($id);
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'History pembayaran rumah berhasil diambil.',
+            'data' => $history
         ]);
     }
 }
