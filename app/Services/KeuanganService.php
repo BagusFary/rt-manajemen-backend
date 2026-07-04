@@ -100,4 +100,9 @@ class KeuanganService
             'detail_pengeluaran' => $pengeluaranDetail
         ];
     }
+
+    public function getHistoryPembayaranByRumah(int $rumahId)
+    {
+        return $this->pembayaranRepo->getHistoryByRumah($rumahId);
+    }
 }
