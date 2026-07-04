@@ -13,6 +13,9 @@ return new class extends Migration
     {
         Schema::create('pengeluaran', function (Blueprint $table) {
             $table->id();
+            $table->text('deskripsi');
+            $table->bigInteger('jumlah');
+            $table->date('tanggal_pengeluaran');
             $table->timestamps();
         });
     }
