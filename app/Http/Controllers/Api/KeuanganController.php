@@ -69,4 +69,14 @@ class KeuanganController extends Controller
             'data' => $detail
         ]);
     }
+
+    public function generateTagihan(): JsonResponse
+    {
+        $jumlahTagihan = $this->keuanganService->generateTagihanBulanan();
+
+        return response()->json([
+            'status' => 'success',
+            'message' => "Berhasil men-generate $jumlahTagihan tagihan baru untuk bulan ini.",
+        ]);
+    }
 }

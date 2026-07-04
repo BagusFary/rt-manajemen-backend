@@ -27,6 +27,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('bayar-iuran', 'bayarIuran');
         Route::post('pengeluaran', 'catatPengeluaran');
 
+        Route::post('keuangan/generate-tagihan','generateTagihan');
         Route::get('report/summary-tahunan', 'reportSummaryTahunan');
         Route::get('report/detail-bulanan', 'reportDetailBulanan');
     });

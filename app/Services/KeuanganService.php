@@ -4,19 +4,23 @@ namespace App\Services;
 
 use App\Repositories\Contracts\PembayaranIuranRepositoryInterface;
 use App\Repositories\Contracts\PengeluaranRepositoryInterface;
+use App\Repositories\Contracts\RiwayatPenghuniRepositoryInterface;
 use Carbon\Carbon;
 
 class KeuanganService
 {
     protected $pembayaranRepo;
     protected $pengeluaranRepo;
+    protected $riwayatRepo;
 
     public function __construct(
         PembayaranIuranRepositoryInterface $pembayaranRepo,
-        PengeluaranRepositoryInterface $pengeluaranRepo
+        PengeluaranRepositoryInterface $pengeluaranRepo,
+        RiwayatPenghuniRepositoryInterface $riwayatRepo
     ) {
         $this->pembayaranRepo = $pembayaranRepo;
         $this->pengeluaranRepo = $pengeluaranRepo;
+        $this->riwayatRepo = $riwayatRepo;
     }
 
     public function bayarIuran(array $data)
@@ -104,5 +108,58 @@ class KeuanganService
     public function getHistoryPembayaranByRumah(int $rumahId)
     {
         return $this->pembayaranRepo->getHistoryByRumah($rumahId);
+    }
+
+    public function generateTagihanBulanan()
+    {
+        $bulanIni = Carbon::now()->month;
+        $tahunIni = Carbon::now()->year;
+        
+        $penghuniAktif = \App\Models\RiwayatPenghuni::whereNull('tanggal_keluar')->get(); 
+        
+        $tagihanDibuat = 0;
+
+        foreach ($penghuniAktif as $huni) {
+            
+            $cekSatpam = $this->pembayaranRepo->getByBulanTahun($bulanIni, $tahunIni)
+                ->where('rumah_id', $huni->rumah_id)
+                ->where('jenis_iuran', 'satpam')
+                ->first();
+
+            if (!$cekSatpam) {
+                $this->pembayaranRepo->create([
+                    'rumah_id' => $huni->rumah_id,
+                    'penghuni_id' => $huni->penghuni_id,
+                    'jenis_iuran' => 'satpam',
+                    'bulan' => $bulanIni,
+                    'tahun' => $tahunIni,
+                    'jumlah_bayar' => 100000,
+                    'status_pembayaran' => 'belum_lunas', 
+                    'tanggal_bayar' => null,
+                ]);
+                $tagihanDibuat++;
+            }
+
+            $cekKebersihan = $this->pembayaranRepo->getByBulanTahun($bulanIni, $tahunIni)
+                ->where('rumah_id', $huni->rumah_id)
+                ->where('jenis_iuran', 'kebersihan')
+                ->first();
+
+            if (!$cekKebersihan) {
+                $this->pembayaranRepo->create([
+                    'rumah_id' => $huni->rumah_id,
+                    'penghuni_id' => $huni->penghuni_id,
+                    'jenis_iuran' => 'kebersihan',
+                    'bulan' => $bulanIni,
+                    'tahun' => $tahunIni,
+                    'jumlah_bayar' => 15000,
+                    'status_pembayaran' => 'belum_lunas',
+                    'tanggal_bayar' => null,
+                ]);
+                $tagihanDibuat++;
+            }
+        }
+
+        return $tagihanDibuat;
     }
 }
