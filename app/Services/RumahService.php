@@ -33,6 +33,12 @@ class RumahService
     {
         return $this->rumahRepo->create($data);
     }
+
+    public function updateRumah(int $id, array $data)
+    {
+        return $this->rumahRepo->update($id, $data);
+    }
+
     public function deleteRumah(int $id)
     {
         return $this->rumahRepo->delete($id);

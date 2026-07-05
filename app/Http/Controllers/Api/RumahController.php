@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreRumahRequest;
 use App\Http\Requests\AssignPenghuniRequest;
+use App\Http\Requests\UpdateRumahRequest;
 use App\Services\KeuanganService;
 use App\Services\RumahService;
 use Illuminate\Http\Request;
@@ -43,6 +44,19 @@ class RumahController extends Controller
     {
         $rumah = $this->rumahService->createRumah($request->validated());
         return response()->json(['status' => 'success', 'data' => $rumah], 201);
+    }
+
+    public function update(UpdateRumahRequest $request, int $id): JsonResponse
+    {
+        $data = $request->validated();
+        
+        $penghuni = $this->rumahService->updateRumah($id, $data);
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Data penghuni berhasil diperbarui',
+            'data' => $penghuni
+        ]);
     }
 
     public function show(int $id): JsonResponse
