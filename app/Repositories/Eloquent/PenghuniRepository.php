@@ -14,9 +14,15 @@ class PenghuniRepository implements PenghuniRepositoryInterface
         $this->model = $penghuni;
     }
 
-    public function getAll()
+    public function getAllPaginated(int $perPage, ?string $search = null)
     {
-        return $this->model->latest()->get();
+        $query = $this->model->latest();
+
+        if ($search) {
+            $query->where('nama_lengkap', 'like', "%{$search}%");
+        }
+
+        return $query->paginate($perPage);
     }
 
     public function getById(int $id)

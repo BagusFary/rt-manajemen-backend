@@ -7,6 +7,7 @@ use App\Http\Requests\StorePenghuniRequest;
 use App\Http\Requests\UpdatePenghuniRequest;
 use App\Services\PenghuniService;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 class PenghuniController extends Controller
 {
@@ -17,9 +18,12 @@ class PenghuniController extends Controller
         $this->penghuniService = $penghuniService;
     }
 
-    public function index(): JsonResponse
+    public function index(Request $request): JsonResponse
     {
-        $penghuni = $this->penghuniService->getAllPenghuni();
+        $perPage = $request->query('per_page', 5);
+        $search = $request->query('search', '');
+        
+        $penghuni = $this->penghuniService->getAllPenghuni($perPage, $search);
         
         return response()->json([
             'status' => 'success',
