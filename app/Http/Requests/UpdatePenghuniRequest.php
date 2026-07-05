@@ -21,4 +21,14 @@ class UpdatePenghuniRequest extends FormRequest
             'status_pernikahan' => 'sometimes|required|in:menikah,belum_menikah',
         ];
     }
+
+    public function messages(): array
+    {
+        return [
+            'foto_ktp.uploaded' => 'Foto KTP gagal diunggah, kemungkinan karena ukuran file terlalu besar (Maks 2MB).',
+            'foto_ktp.max' => 'Ukuran foto KTP tidak boleh lebih dari 2MB.',
+            'foto_ktp.image' => 'File yang diunggah harus berupa gambar.',
+            'foto_ktp.mimes' => 'Format foto KTP harus berupa jpeg, png, atau jpg.',
+        ];
+    }
 }
