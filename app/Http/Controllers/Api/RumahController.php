@@ -51,6 +51,12 @@ class RumahController extends Controller
         return response()->json(['status' => 'success', 'data' => $rumah]);
     }
 
+    public function destroy(int $id): JsonResponse
+    {
+        $rumah = $this->rumahService->deleteRumah($id);
+        return response()->json(['status' => 'success', 'data' => $rumah]);
+    }
+
     public function assignPenghuni(AssignPenghuniRequest $request, int $id): JsonResponse
     {
         $data = $request->validated();

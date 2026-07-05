@@ -33,7 +33,11 @@ class RumahService
     {
         return $this->rumahRepo->create($data);
     }
-
+    public function deleteRumah(int $id)
+    {
+        return $this->rumahRepo->delete($id);
+    }
+    
     public function assignPenghuni(int $rumahId, int $penghuniId, string $tanggalMasuk)
     {
         $penghuniAktif = $this->riwayatRepo->getActiveByRumahId($rumahId);
