@@ -19,9 +19,9 @@ class RumahService
         $this->riwayatRepo = $riwayatRepo;
     }
 
-    public function getAllRumah()
+    public function getAllRumah($perPage = 5, $search = null)
     {
-        return $this->rumahRepo->getAll();
+        return $this->rumahRepo->getAllPaginated($perPage, $search);
     }
 
     public function getDetailRumah(int $id)

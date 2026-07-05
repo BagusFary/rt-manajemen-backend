@@ -14,6 +14,7 @@ use Carbon\Carbon;
 class RumahController extends Controller
 {
     protected $rumahService;
+    protected $keuanganService;
 
     public function __construct(
         RumahService $rumahService,
@@ -24,10 +25,18 @@ class RumahController extends Controller
         $this->keuanganService = $keuanganService;
     }
 
-    public function index(): JsonResponse
+    public function index(Request $request): JsonResponse
     {
-        $rumah = $this->rumahService->getAllRumah();
-        return response()->json(['status' => 'success', 'data' => $rumah]);
+        $perPage = $request->query('per_page', 5);
+        $search = $request->query('search', '');
+
+        $rumah = $this->rumahService->getAllRumah($perPage, $search);
+        
+        return response()->json([
+            'status' => 'success', 
+            'message' => 'Data rumah berhasil diambil',
+            'data' => $rumah
+        ]);
     }
 
     public function store(StoreRumahRequest $request): JsonResponse
