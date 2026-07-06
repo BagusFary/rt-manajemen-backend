@@ -25,10 +25,25 @@ Langkah-langkah untuk menyiapkan environment server backend:
     composer install
     ```
 
-3.  **Konfigurasi Environment**
-    Salin file configuration dan generate security key:
+3. **Konfigurasi Environment**
+
+    Salin file konfigurasi sesuai dengan terminal yang digunakan, lalu generate application key.
+
+    **Linux / macOS / Git Bash / WSL**
     ```bash
     cp .env.example .env
+    php artisan key:generate
+    ```
+
+    **Windows Command Prompt (CMD)**
+    ```cmd
+    copy .env.example .env
+    php artisan key:generate
+    ```
+
+    **Windows PowerShell**
+    ```powershell
+    Copy-Item .env.example .env
     php artisan key:generate
     ```
 
@@ -59,3 +74,4 @@ Langkah-langkah untuk menyiapkan environment server backend:
     *API sekarang berjalan di: `http://127.0.0.1:8000`*
 
 ---
+*Dokumentasi ini disusun secara profesional untuk keperluan Skill Fit Test PT. Beon Intermedia .*
