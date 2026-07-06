@@ -25,6 +25,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::controller(KeuanganController::class)->prefix('keuangan')->group(function () {
         Route::post('bayar-iuran', 'bayarIuran');
+        Route::get('pengeluaran', 'indexPengeluaran');
         Route::post('pengeluaran', 'catatPengeluaran');
 
         Route::post('generate-tagihan','generateTagihan');

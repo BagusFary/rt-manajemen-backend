@@ -23,6 +23,11 @@ class KeuanganService
         $this->riwayatRepo = $riwayatRepo;
     }
 
+    public function getAllPengeluaran()
+    {
+        return $this->pengeluaranRepo->getAll();
+    }
+
     public function bayarIuran(array $data)
     {
         $nominal = $data['jenis_iuran'] == 'satpam' ? 100000 : 15000; 
