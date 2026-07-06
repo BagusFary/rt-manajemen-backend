@@ -1,5 +1,9 @@
 # Panduan Instalasi (Backend): Sistem Informasi Manajemen RT (SIM RT)
 
+### Entity Relationship Diagram (ERD)
+![Database Schema](docs/erd.jpg)
+
+---
 
 ### Requirement 
 Sebelum memulai, pastikan perangkat Anda sudah terinstal:
