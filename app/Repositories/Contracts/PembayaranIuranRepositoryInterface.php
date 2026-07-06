@@ -9,4 +9,5 @@ interface PembayaranIuranRepositoryInterface
     public function getHistoryByRumah(int $rumahId);
     public function getByBulanTahun(int $bulan, int $tahun);
     public function getTotalPemasukanPerBulan(int $tahun);
+    public function updateOrCreate(array $attributes, array $values);
 }
