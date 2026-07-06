@@ -19,6 +19,18 @@ class KeuanganController extends Controller
         $this->keuanganService = $keuanganService;
     }
 
+    public function indexPengeluaran()
+    {
+        $pengeluaran = $this->keuanganService->getAllPengeluaran();
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Riwayat Pengeluaran berhasil diambil.',
+            'data' => $pengeluaran
+        ], 201);
+        
+    }
+
     public function bayarIuran(StorePembayaranRequest $request): JsonResponse
     {
         $data = $request->validated();

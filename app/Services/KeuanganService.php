@@ -23,6 +23,11 @@ class KeuanganService
         $this->riwayatRepo = $riwayatRepo;
     }
 
+    public function getAllPengeluaran()
+    {
+        return $this->pengeluaranRepo->getAll();
+    }
+
     public function bayarIuran(array $data)
     {
         $nominal = $data['jenis_iuran'] == 'satpam' ? 100000 : 15000; 
@@ -30,30 +35,38 @@ class KeuanganService
         if (isset($data['bayar_setahun']) && $data['bayar_setahun'] == true) {
             $hasilBulk = [];
             for ($bulan = 1; $bulan <= 12; $bulan++) {
-                $hasilBulk[] = $this->pembayaranRepo->create([
-                    'rumah_id' => $data['rumah_id'],
-                    'penghuni_id' => $data['penghuni_id'],
-                    'jenis_iuran' => $data['jenis_iuran'],
-                    'bulan' => $bulan,
-                    'tahun' => $data['tahun'],
-                    'jumlah_bayar' => $nominal,
-                    'status_pembayaran' => 'lunas',
-                    'tanggal_bayar' => Carbon::now()->toDateTimeString(),
-                ]);
+                $hasilBulk[] = $this->pembayaranRepo->updateOrCreate(
+                    [
+                        'rumah_id' => $data['rumah_id'],
+                        'jenis_iuran' => $data['jenis_iuran'],
+                        'bulan' => $bulan,
+                        'tahun' => $data['tahun'],
+                    ],
+                    [
+                        'penghuni_id' => $data['penghuni_id'],
+                        'jumlah_bayar' => $nominal,
+                        'status_pembayaran' => 'lunas',
+                        'tanggal_bayar' => Carbon::now()->toDateTimeString(),
+                    ]
+                );
             }
             return $hasilBulk;
         }
 
-        return $this->pembayaranRepo->create([
-            'rumah_id' => $data['rumah_id'],
-            'penghuni_id' => $data['penghuni_id'],
-            'jenis_iuran' => $data['jenis_iuran'],
-            'bulan' => $data['bulan'],
-            'tahun' => $data['tahun'],
-            'jumlah_bayar' => $nominal,
-            'status_pembayaran' => 'lunas',
-            'tanggal_bayar' => Carbon::now()->toDateTimeString(),
-        ]);
+        return $this->pembayaranRepo->updateOrCreate(
+            [
+                'rumah_id' => $data['rumah_id'],
+                'jenis_iuran' => $data['jenis_iuran'],
+                'bulan' => $data['bulan'],
+                'tahun' => $data['tahun'],
+            ],
+            [
+                'penghuni_id' => $data['penghuni_id'],
+                'jumlah_bayar' => $nominal,
+                'status_pembayaran' => 'lunas',
+                'tanggal_bayar' => Carbon::now()->toDateTimeString(),
+            ]
+        );
     }
 
     public function catatPengeluaran(array $data)

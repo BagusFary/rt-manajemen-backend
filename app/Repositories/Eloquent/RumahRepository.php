@@ -14,11 +14,19 @@ class RumahRepository implements RumahRepositoryInterface
         $this->model = $rumah;
     }
 
-    public function getAll()
+    public function getAllPaginated(int $perPage, ?string $search = null)
     {
-        return $this->model->with(['riwayatPenghuni' => function ($query) {
+        $query = $this->model->with(['riwayatPenghuni' => function ($query) {
             $query->whereNull('tanggal_keluar')->with('penghuni');
-        }])->get();
+        }])->latest();
+
+        if ($search) {
+            $query->where(function($q) use ($search) {
+                $q->where('nomor_rumah', 'like', "%{$search}%");
+            });
+        }
+
+        return $query->paginate($perPage);
     }
 
     public function getById(int $id)

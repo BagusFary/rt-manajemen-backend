@@ -19,9 +19,9 @@ class RumahService
         $this->riwayatRepo = $riwayatRepo;
     }
 
-    public function getAllRumah()
+    public function getAllRumah($perPage = 5, $search = null)
     {
-        return $this->rumahRepo->getAll();
+        return $this->rumahRepo->getAllPaginated($perPage, $search);
     }
 
     public function getDetailRumah(int $id)
@@ -34,6 +34,16 @@ class RumahService
         return $this->rumahRepo->create($data);
     }
 
+    public function updateRumah(int $id, array $data)
+    {
+        return $this->rumahRepo->update($id, $data);
+    }
+
+    public function deleteRumah(int $id)
+    {
+        return $this->rumahRepo->delete($id);
+    }
+    
     public function assignPenghuni(int $rumahId, int $penghuniId, string $tanggalMasuk)
     {
         $penghuniAktif = $this->riwayatRepo->getActiveByRumahId($rumahId);

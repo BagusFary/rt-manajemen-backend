@@ -14,9 +14,9 @@ class PenghuniService
         $this->penghuniRepository = $penghuniRepository;
     }
 
-    public function getAllPenghuni()
+    public function getAllPenghuni($perPage = 5, $search = null)
     {
-        return $this->penghuniRepository->getAll();
+        return $this->penghuniRepository->getAllPaginated($perPage, $search);
     }
 
     public function getPenghuniById(int $id)

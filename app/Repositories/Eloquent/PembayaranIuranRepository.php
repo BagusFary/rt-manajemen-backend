@@ -54,4 +54,9 @@ class PembayaranIuranRepository implements PembayaranIuranRepositoryInterface
                            ->pluck('total', 'bulan')
                            ->toArray();
     }
+
+    public function updateOrCreate(array $attributes, array $values)
+    {
+        return $this->model->updateOrCreate($attributes, $values);
+    }
 }

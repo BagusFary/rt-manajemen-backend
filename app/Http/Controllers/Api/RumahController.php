@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreRumahRequest;
 use App\Http\Requests\AssignPenghuniRequest;
+use App\Http\Requests\UpdateRumahRequest;
 use App\Services\KeuanganService;
 use App\Services\RumahService;
 use Illuminate\Http\Request;
@@ -14,6 +15,7 @@ use Carbon\Carbon;
 class RumahController extends Controller
 {
     protected $rumahService;
+    protected $keuanganService;
 
     public function __construct(
         RumahService $rumahService,
@@ -24,10 +26,18 @@ class RumahController extends Controller
         $this->keuanganService = $keuanganService;
     }
 
-    public function index(): JsonResponse
+    public function index(Request $request): JsonResponse
     {
-        $rumah = $this->rumahService->getAllRumah();
-        return response()->json(['status' => 'success', 'data' => $rumah]);
+        $perPage = $request->query('per_page', 5);
+        $search = $request->query('search', '');
+
+        $rumah = $this->rumahService->getAllRumah($perPage, $search);
+        
+        return response()->json([
+            'status' => 'success', 
+            'message' => 'Data rumah berhasil diambil',
+            'data' => $rumah
+        ]);
     }
 
     public function store(StoreRumahRequest $request): JsonResponse
@@ -36,9 +46,28 @@ class RumahController extends Controller
         return response()->json(['status' => 'success', 'data' => $rumah], 201);
     }
 
+    public function update(UpdateRumahRequest $request, int $id): JsonResponse
+    {
+        $data = $request->validated();
+        
+        $penghuni = $this->rumahService->updateRumah($id, $data);
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Data penghuni berhasil diperbarui',
+            'data' => $penghuni
+        ]);
+    }
+
     public function show(int $id): JsonResponse
     {
         $rumah = $this->rumahService->getDetailRumah($id);
+        return response()->json(['status' => 'success', 'data' => $rumah]);
+    }
+
+    public function destroy(int $id): JsonResponse
+    {
+        $rumah = $this->rumahService->deleteRumah($id);
         return response()->json(['status' => 'success', 'data' => $rumah]);
     }
 
