@@ -128,7 +128,7 @@ class KeuanganService
         $bulanIni = Carbon::now()->month;
         $tahunIni = Carbon::now()->year;
         
-        $penghuniAktif = \App\Models\RiwayatPenghuni::whereNull('tanggal_keluar')->get(); 
+        $penghuniAktif = $this->riwayatRepo->getAktif(); 
         
         $tagihanDibuat = 0;
 

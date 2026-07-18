@@ -50,12 +50,12 @@ class RumahController extends Controller
     {
         $data = $request->validated();
         
-        $penghuni = $this->rumahService->updateRumah($id, $data);
+        $rumah = $this->rumahService->updateRumah($id, $data);
 
         return response()->json([
             'status' => 'success',
-            'message' => 'Data penghuni berhasil diperbarui',
-            'data' => $penghuni
+            'message' => 'Data rumah berhasil diperbarui',
+            'data' => $rumah
         ]);
     }
 
@@ -96,9 +96,9 @@ class RumahController extends Controller
     }
 
     
-    public function historyPembayaran(int $id, KeuanganService $keuanganService): JsonResponse
+    public function historyPembayaran(int $id): JsonResponse
     {
-        $history = $keuanganService->getHistoryPembayaranByRumah($id);
+        $history = $this->keuanganService->getHistoryPembayaranByRumah($id);
 
         return response()->json([
             'status' => 'success',

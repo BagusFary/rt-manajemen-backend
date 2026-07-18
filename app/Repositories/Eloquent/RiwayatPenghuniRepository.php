@@ -33,4 +33,9 @@ class RiwayatPenghuniRepository implements RiwayatPenghuniRepositoryInterface
         
         return $riwayat;
     }
+
+    public function getAktif()
+    {
+        return $this->model->whereNull('tanggal_keluar')->get();
+    }
 }
